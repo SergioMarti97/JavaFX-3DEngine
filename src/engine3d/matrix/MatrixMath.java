@@ -391,7 +391,7 @@ public class MatrixMath {
      * @param lineEnd ending point of the line
      * @return return a point if the line intersects with the plane
      */
-    private static Vec4df vectorIntersectPlane(Vec4df plane_p, Vec4df plane_n, Vec4df lineStart, Vec4df lineEnd) {
+    public static Vec4df vectorIntersectPlane(Vec4df plane_p, Vec4df plane_n, Vec4df lineStart, Vec4df lineEnd) {
         float t = calculateT(plane_p, plane_n, lineStart, lineEnd);
         return  calculateIntersectionPoint(lineStart, lineEnd, t);
     }

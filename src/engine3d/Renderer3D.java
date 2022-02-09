@@ -20,12 +20,12 @@ public class Renderer3D extends Renderer {
     /**
      * The depth buffer
      */
-    private float[] depthBuffer;
+    private final float[] depthBuffer;
 
     /**
      * The render flag
      */
-    private RenderFlags renderFlag = RenderFlags.RENDER_TEXTURED;
+    private RenderFlags renderFlag = RenderFlags.RENDER_TEXTURED_SHADOW;
 
     /**
      * The constructor
@@ -344,7 +344,7 @@ public class Renderer3D extends Renderer {
      * @param brightness the brightness of the triangle
      * @param texture the image texture
      */
-    private void drawTexturedTriangle(
+    private void drawTexturedShadowTriangle(
             int x1, int y1, float u1, float v1, float w1,
             int x2, int y2, float u2, float v2, float w2,
             int x3, int y3, float u3, float v3, float w3,
@@ -863,7 +863,8 @@ public class Renderer3D extends Renderer {
                 (int)triangle.getP()[0].getX(), (int)triangle.getP()[0].getY(),
                 (int)triangle.getP()[1].getX(), (int)triangle.getP()[1].getY(),
                 (int)triangle.getP()[2].getX(), (int)triangle.getP()[2].getY(),
-                0xff000000
+                //0xff000000
+                0xffffffff
         );
     }
 
@@ -916,8 +917,8 @@ public class Renderer3D extends Renderer {
      * @param triangle the triangle to draw
      * @param texture the image texture
      */
-    private void drawTexturedTriangle(Triangle triangle, Image texture) {
-        drawTexturedTriangle(
+    private void drawTexturedShadowTriangle(Triangle triangle, Image texture) {
+        drawTexturedShadowTriangle(
                 (int) triangle.getP()[0].getX(),
                 (int) triangle.getP()[0].getY(),
 
@@ -945,6 +946,41 @@ public class Renderer3D extends Renderer {
     }
 
     /**
+     * This method is an overload of the drawTexturedTriangle. It doesn't
+     * have in account the brightness of the triangle, show the
+     * triangle isn't shadowed
+     * @param triangle the triangle to draw
+     * @param texture the image texture
+     */
+    private void drawTexturedTriangle(Triangle triangle, Image texture) {
+        drawTexturedShadowTriangle(
+                (int) triangle.getP()[0].getX(),
+                (int) triangle.getP()[0].getY(),
+
+                triangle.getT()[0].getX(),
+                triangle.getT()[0].getY(),
+                triangle.getT()[0].getZ(),
+
+                (int) triangle.getP()[1].getX(),
+                (int) triangle.getP()[1].getY(),
+
+                triangle.getT()[1].getX(),
+                triangle.getT()[1].getY(),
+                triangle.getT()[1].getZ(),
+
+                (int) triangle.getP()[2].getX(),
+                (int) triangle.getP()[2].getY(),
+
+                triangle.getT()[2].getX(),
+                triangle.getT()[2].getY(),
+                triangle.getT()[2].getZ(),
+
+                1.0f,
+                texture
+        );
+    }
+
+    /**
      * This method draws a triangle in any form what is would to draw
      * @param triangle triangle to render.
      */
@@ -966,15 +1002,22 @@ public class Renderer3D extends Renderer {
             case RENDER_FULL_TEXTURED:
                 drawTexturedTriangle(triangle, texture);
                 break;
+            case RENDER_TEXTURED_SHADOW:
+                drawTexturedShadowTriangle(triangle, texture);
+                drawWireTriangle(triangle);
+                break;
+            case RENDER_FULL_TEXTURED_SHADOW:
+                drawTexturedShadowTriangle(triangle, texture);
+                break;
         }
     }
 
     private void renderNonTexturedTriangle(Triangle triangle, int color) {
         switch ( renderFlag ) {
-            case RENDER_FLAT: case RENDER_TEXTURED:
+            case RENDER_FLAT: case RENDER_TEXTURED: case RENDER_TEXTURED_SHADOW:
                 drawFlatTriangle(triangle, color);
                 break;
-            case RENDER_SMOOTH_FLAT: case RENDER_FULL_TEXTURED:
+            case RENDER_SMOOTH_FLAT: case RENDER_FULL_TEXTURED: case RENDER_FULL_TEXTURED_SHADOW:
                 drawFlatSmoothTriangle(triangle, color);
                 break;
             case RENDER_WIRE:
@@ -985,10 +1028,10 @@ public class Renderer3D extends Renderer {
 
     private void renderNonTexturedTriangle(Triangle triangle) {
         switch ( renderFlag ) {
-            case RENDER_FLAT: case RENDER_TEXTURED:
+            case RENDER_FLAT: case RENDER_TEXTURED: case RENDER_TEXTURED_SHADOW:
                 drawFlatTriangle(triangle);
                 break;
-            case RENDER_SMOOTH_FLAT: case RENDER_FULL_TEXTURED:
+            case RENDER_SMOOTH_FLAT: case RENDER_FULL_TEXTURED: case RENDER_FULL_TEXTURED_SHADOW:
                 drawFlatSmoothTriangle(triangle);
                 break;
             case RENDER_WIRE:

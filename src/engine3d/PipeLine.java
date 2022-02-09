@@ -441,17 +441,14 @@ public class PipeLine {
      */
     public void renderMesh(Mesh mesh, Image texture) {
         renderer3D.renderTriangles(getTrianglesToRender(mesh), texture);
-        renderer3D.clearDepthBuffer();
     }
 
     public void renderMesh(Mesh mesh, int color) {
         renderer3D.renderTriangles(getTrianglesToRender(mesh), color);
-        renderer3D.clearDepthBuffer();
     }
 
     public void renderMesh(Mesh mesh) {
         renderer3D.renderTriangles(getTrianglesToRender(mesh));
-        renderer3D.clearDepthBuffer();
     }
 
     /**
