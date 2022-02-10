@@ -31,6 +31,18 @@ public class Transform {
     }
 
     /**
+     * Parametrized non object constructor
+     * the parameters x, y, z represents the delta vector
+     * @param x magnitude x of delta
+     * @param y magnitude y of delta
+     * @param z magnitude z of delta
+     */
+    public Transform(float x, float y, float z) {
+        mat = MatrixMath.matrixMakeIdentity();
+        d = new Vec4df(x, y, z);
+    }
+
+    /**
      * Parametrized constructor
      * @param delta vector of transformation in x, y, z axis
      */
@@ -68,13 +80,9 @@ public class Transform {
     }
 
     // Combination methods
-
-    public Mat4x4 combine(Mat4x4 mat) {
-        return MatrixMath.matrixMultiplyMatrix(this.mat, mat);
-    }
-
-    public Mat4x4 combine(Transform t) {
-        return MatrixMath.matrixMultiplyMatrix(this.mat, t.getMat());
+    public Transform combine(Transform t) {
+        this.mat = MatrixMath.matrixMultiplyMatrix(this.mat, t.getMat());
+        return this;
     }
 
     // Getters and Setters

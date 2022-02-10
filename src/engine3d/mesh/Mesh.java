@@ -126,7 +126,7 @@ public class Mesh {
                         for ( int i = 1; i < splitLine.length; i++ ) {
                             String[] splitNumber = splitLine[i].split("/");
                             facePoint[i - 1] = Integer.parseInt(splitNumber[0]);
-                            faceTexture[i - 1] = Integer.parseInt(splitNumber[2]);
+                            faceTexture[i - 1] = Integer.parseInt(splitNumber[1]);
                         }
                         tris.add(
                                 new Triangle(
@@ -136,9 +136,9 @@ public class Mesh {
                                                 vertex.get(facePoint[2] - 1)
                                         },
                                         new Vec3df[] {
-                                                texturePoints.get(faceTexture[0]),
-                                                texturePoints.get(faceTexture[1]),
-                                                texturePoints.get(faceTexture[2]),
+                                                texturePoints.get(faceTexture[0] - 1),
+                                                texturePoints.get(faceTexture[1] - 1),
+                                                texturePoints.get(faceTexture[2] - 1),
                                         }
                                 )
                         );

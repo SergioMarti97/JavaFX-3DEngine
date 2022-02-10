@@ -461,6 +461,13 @@ public class PipeLine {
         renderMesh(model.getMesh(), model.getTexture());
     }
 
+    /**
+     * Call this method if the camera object has been modified
+     */
+    public void updateMatView() {
+        this.matView = cameraObj.getMatView();
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public Renderer3D getRenderer3D() {
