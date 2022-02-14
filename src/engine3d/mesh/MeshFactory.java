@@ -10,9 +10,8 @@ import java.util.ArrayList;
  * This class contains methods for
  * make different kinds of meshes
  *
- * @class MeshFactory
  * @author Sergio Martí Torregrosa
- * @date 16/11/2020
+ * 16/11/2020
  */
 public class MeshFactory {
 
@@ -328,10 +327,10 @@ public class MeshFactory {
      * @param hasTexture if the mesh has texture
      * @return the model
      */
-    public static Mesh getMeshFromObjectFile(String path, boolean hasTexture) {
-        Mesh mesh = new Mesh();
-        mesh.loadFromObjectFile(path, hasTexture);
-        return mesh;
+    public static Mesh getMeshFromObj(String path, boolean hasTexture) {
+        MeshObject obj = new MeshObject();
+        obj.load(path, hasTexture);
+        return obj.getMesh();
     }
 
     /**
@@ -343,9 +342,9 @@ public class MeshFactory {
      * @return the model
      */
     public static Model getModel(String meshPath, String texturePath) {
-        Mesh mesh = new Mesh();
-        mesh.loadFromObjectFile(meshPath, true);
-        return new Model(mesh, new Image(texturePath));
+        MeshObject obj = new MeshObject();
+        obj.load(meshPath, true);
+        return new Model(obj.getMesh(), new Image(texturePath));
     }
 
 }
