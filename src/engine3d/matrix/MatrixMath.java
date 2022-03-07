@@ -17,6 +17,18 @@ import java.util.ArrayList;
  */
 public class MatrixMath {
 
+    static {
+        System.loadLibrary("native/native_matrix_math");
+    }
+
+    /**
+     * Quick algorithm for inverse square root
+     * @see "https://www.youtube.com/watch?v=p8u_k2LIZyo"
+     * @param number a floating point number
+     * @return inverse square root the number
+     */
+    public static native float quickInverseSqrt(float number);
+
     /**
      * This method transforms the triangles of a mesh
      * with the matrix passed on the parameters

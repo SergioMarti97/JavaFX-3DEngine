@@ -31,6 +31,8 @@ public class Triangle {
      */
     private Vec3df[] t = new Vec3df[3];
 
+    private Vec4df[] n = new Vec4df[3];
+
     /**
      * The triangle color
      */
@@ -51,6 +53,9 @@ public class Triangle {
         t[0] = new Vec3df();
         t[1] = new Vec3df();
         t[2] = new Vec3df();
+        n[0] = new Vec4df();
+        n[1] = new Vec4df();
+        n[2] = new Vec4df();
     }
 
     /**
@@ -64,6 +69,9 @@ public class Triangle {
         t[0] = new Vec3df();
         t[1] = new Vec3df();
         t[2] = new Vec3df();
+        n[0] = new Vec4df();
+        n[1] = new Vec4df();
+        n[2] = new Vec4df();
     }
 
     /**
@@ -78,6 +86,9 @@ public class Triangle {
         t[0] = new Vec3df();
         t[1] = new Vec3df();
         t[2] = new Vec3df();
+        n[0] = new Vec4df();
+        n[1] = new Vec4df();
+        n[2] = new Vec4df();
         this.color = color;
     }
 
@@ -93,6 +104,9 @@ public class Triangle {
         this.t[0] = new Vec3df(t[0]);
         this.t[1] = new Vec3df(t[1]);
         this.t[2] = new Vec3df(t[2]);
+        n[0] = new Vec4df();
+        n[1] = new Vec4df();
+        n[2] = new Vec4df();
     }
 
     /**
@@ -108,6 +122,9 @@ public class Triangle {
         this.t[0] = new Vec3df(t[0]);
         this.t[1] = new Vec3df(t[1]);
         this.t[2] = new Vec3df(t[2]);
+        n[0] = new Vec4df();
+        n[1] = new Vec4df();
+        n[2] = new Vec4df();
         this.color = color;
     }
 
@@ -125,8 +142,24 @@ public class Triangle {
         this.t[0] = new Vec3df(t[0]);
         this.t[1] = new Vec3df(t[1]);
         this.t[2] = new Vec3df(t[2]);
+        n[0] = new Vec4df();
+        n[1] = new Vec4df();
+        n[2] = new Vec4df();
         this.color = color;
         this.brightness = brightness;
+    }
+
+    public Triangle(Vec4df[] p, Vec3df[] t, Vec4df[] n) {
+        this.p[0] = new Vec4df(p[0]);
+        this.p[1] = new Vec4df(p[1]);
+        this.p[2] = new Vec4df(p[2]);
+        this.t[0] = new Vec3df(t[0]);
+        this.t[1] = new Vec3df(t[1]);
+        this.t[2] = new Vec3df(t[2]);
+
+        this.n[0] = new Vec4df(n[0]);
+        this.n[1] = new Vec4df(n[1]);
+        this.n[2] = new Vec4df(n[2]);
     }
 
     /**
@@ -140,6 +173,9 @@ public class Triangle {
         this.t[0] = new Vec3df(triangle.getT()[0]);
         this.t[1] = new Vec3df(triangle.getT()[1]);
         this.t[2] = new Vec3df(triangle.getT()[2]);
+        n[0] = new Vec4df();
+        n[1] = new Vec4df();
+        n[2] = new Vec4df();
         this.color = triangle.getColor();
         this.brightness = triangle.getBrightness();
     }
@@ -158,6 +194,10 @@ public class Triangle {
      */
     public Vec3df[] getT() {
         return t;
+    }
+
+    public Vec4df[] getN() {
+        return n;
     }
 
     /**
@@ -194,6 +234,12 @@ public class Triangle {
         this.t[0].set(t[0]);
         this.t[1].set(t[1]);
         this.t[2].set(t[2]);
+    }
+
+    public void setN(Vec4df[] n) {
+        this.n[0].set(n[0]);
+        this.n[1].set(n[1]);
+        this.n[2].set(n[2]);
     }
 
     /**

@@ -1,10 +1,17 @@
 package engine3d.mesh;
 
-import olcPGEApproach.gfx.images.Image;
+import java.util.ArrayList;
 
 /**
  * This class contains the mesh and the
  * texture image of a model 3d
+ *
+ * A model can be a sum of meshes
+ * The meshes can have multiple textures
+ * The textures vertex information is stored in
+ * the .obj file, but the information about the
+ * material and the texture image is stored on
+ * the .mtl file
  *
  * @class Model
  * @author Sergio Martí Torregrosa
@@ -12,37 +19,33 @@ import olcPGEApproach.gfx.images.Image;
  */
 public class Model {
 
-    /**
-     * The mesh of the model
-     */
-    private Mesh mesh;
+    private String name;
 
-    /**
-     * The texture image of the model
-     */
-    private Image texture;
+    private ArrayList<MeshObject> o;
 
-    public Model(Mesh mesh, Image texture) {
-        this.mesh = mesh;
-        this.texture = texture;
+    public Model(ArrayList<MeshObject> o) {
+        this.o = o;
     }
 
-    ////////////////////////////////////////////////////////////
-
-    public Mesh getMesh() {
-        return mesh;
+    public Model(String name, ArrayList<MeshObject> o) {
+        this.name = name;
+        this.o = o;
     }
 
-    public Image getTexture() {
-        return texture;
+    public String getName() {
+        return name;
     }
 
-    public void setMesh(Mesh mesh) {
-        this.mesh = mesh;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setTexture(Image texture) {
-        this.texture = texture;
+    public ArrayList<MeshObject> getO() {
+        return o;
+    }
+
+    public void setO(ArrayList<MeshObject> o) {
+        this.o = o;
     }
 
 }

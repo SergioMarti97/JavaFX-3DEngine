@@ -1,6 +1,7 @@
 package engine3d;
 
 import engine3d.mesh.Triangle;
+import olcPGEApproach.gfx.HexColors;
 import olcPGEApproach.gfx.Renderer;
 import olcPGEApproach.gfx.images.Image;
 
@@ -65,198 +66,6 @@ public class Renderer3D extends Renderer {
     }
 
     /**
-     * This method draws a simple straight vertical line, is needed for
-     * the draw line primitive. Is a way to split the method
-     * The straight lines idea by gurkanctn
-     * @param x1 the start x coordinate of the line
-     * @param y1 the start y coordinate of the line
-     * @param depth1 the depth value associate with the first pixel of the line
-     * @param y2 the end y coordinate of the line
-     * @param depth2 the depth value associate with the second pixel of the line
-     * @param color the color of the line
-     */
-    private void drawStraightVerticalLine(int x1, int y1, float depth1, int y2, float depth2, int color) {
-        int y, temp;
-        float distDepth, increaseDepth, temporalFloat;
-
-        distDepth = depth2 - depth1;
-
-        if ( y2 < y1 ) {
-            temp = y1;
-            y1 = y2;
-            y2 = temp;
-        }
-
-        if ( distDepth == 0 ) { // The line has the same depth in all
-
-            for ( y = y1; y <= y2; y++ ) {
-                setPixel(x1, y, depth1, color);
-            }
-
-        } else { // The line has a different depth
-
-            if ( depth2 < depth1 ) {
-                temporalFloat = depth1;
-                depth1 = depth2;
-                depth2 = temporalFloat;
-            }
-
-            increaseDepth = depth2 / depth1;
-
-            for ( y = y1; y <= y2; y++ ) {
-                setPixel(x1, y, y * increaseDepth, color);
-            }
-        }
-    }
-
-    /**
-     * This method draws a simple straight horizontal line, is needed for
-     * the draw line primitive. Is a way to split the method
-     * The straight lines idea by gurkanctn
-     * @param x1 the start x coordinate of the line
-     * @param y1 the start y coordinate of the line
-     * @param depth1 the depth value associate with the first pixel of the line
-     * @param x2 the end x coordinate of the line
-     * @param depth2 the depth value associate with the second pixel of the line
-     * @param color the color of the line
-     */
-    private void drawStraightHorizontalLine(int x1, int y1, float depth1, int x2, float depth2, int color) {
-        int x, temp;
-        float distDepth, increaseDepth, temporalFloat;
-
-        distDepth = depth2 - depth1;
-
-        if ( x2 < x1 ) {
-            temp = x1;
-            x1 = x2;
-            x2 = temp;
-        }
-
-        if ( distDepth == 0 ) { // The line has the same depth in all
-
-            for ( x = x1; x <= x2; x++ ) {
-                setPixel(x, y1, depth1, color);
-            }
-
-        } else { // The line has different depth
-
-            if ( depth2 < depth1 ) {
-                temporalFloat = depth1;
-                depth1 = depth2;
-                depth2 = temporalFloat;
-            }
-
-            increaseDepth = depth2 / depth1;
-
-            for ( x = x1; x <= x2; x++ ) {
-                setPixel(x, y1, increaseDepth * x, color);
-            }
-
-        }
-    }
-
-    /**
-     * This method draws a line on screen, but is has in account the depthBuffer
-     * of the renderer3D
-     * @param x1 the start x coordinate of the line
-     * @param y1 the start y coordinate of the line
-     * @param depth1 the depth value associate with the first pixel of the line
-     * @param x2 the end x coordinate of the line
-     * @param y2 the end y coordinate of the line
-     * @param depth2 the depth value associate with the second pixel of the line
-     * @param color the color of the line
-     */
-    public void drawLine(int x1, int y1, float depth1, int x2, int y2, float depth2, int color) {
-        int x, y, distX, distY;
-
-        distX = x2 - x1;
-        distY = y2 - y1;
-
-        // Line is vertical
-        if ( distX == 0 ) {
-            drawStraightVerticalLine(x1, y1, depth1, y2, depth2, color);
-            return;
-        }
-
-        // Line is horizontal
-        if ( distY == 0 ) {
-            drawStraightHorizontalLine(x1, y1, depth1, x2, depth2, color);
-            return;
-        }
-
-        // Line is diagonal
-        int absDistX1 = Math.abs(distX);
-        int absDistY1 = Math.abs(distY);
-
-        if ( absDistY1 <= absDistX1 ) {
-
-            int px = 2 * absDistY1 - absDistX1;
-            int endX;
-
-            if ( distX >= 0 ) {
-                x = x1;
-                y = y1;
-                endX = x2;
-            } else {
-                x = x2;
-                y = y2;
-                endX = x1;
-            }
-
-            setPixel(x, y, color);
-
-            for (; x < endX; x++ ) {
-
-                if ( px < 0 ) {
-                    px = px + 2 * absDistY1;
-                } else {
-                    if ( ( distX < 0 && distY < 0 ) || ( distX > 0 && distY > 0 ) ) {
-                        y = y + 1;
-                    } else {
-                        y = y - 1;
-                    }
-                    px = px + 2 * (absDistY1 - absDistX1);
-                }
-
-                setPixel(x, y, color);
-            }
-
-        } else {
-
-            int py = 2 * absDistX1 - absDistY1;
-            int endY;
-
-            if ( distY >= 0 ) {
-                x = x1;
-                y = y1;
-                endY = y2;
-            } else {
-                x = x2;
-                y = y2;
-                endY = y1;
-            }
-
-            setPixel(x, y, color);
-
-            for (; y < endY; y++) {
-
-                if ( py <= 0 ) {
-                    py = py + 2 * absDistX1;
-                } else {
-                    if ( ( distX < 0 && distY < 0 ) || ( distX > 0 && distY > 0 ) ) {
-                        x = x + 1;
-                    } else {
-                        x = x - 1;
-                    }
-                    py = py + 2 * (absDistX1 - absDistY1);
-                }
-
-                setPixel(x, y, color);
-            }
-        }
-    }
-
-    /**
      * This method pretends to change the input color by the light source
      * @param inputColor the input color to change
      * @param light the light
@@ -290,6 +99,19 @@ public class Renderer3D extends Renderer {
         }
     }
 
+    private int getSample(float x, float y, Image img) {
+        int sampleX = Math.min((int)(x * (float)img.getW()), img.getW() > 0 ? img.getW() - 1 : img.getW());
+        int sampleY = Math.min((int)(y * (float)img.getH()), img.getH() > 0 ? img.getH() - 1 : img.getH());
+        int color;
+        try {
+            color = img.getPixel(sampleX, sampleY);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            color = HexColors.MAGENTA;
+        }
+
+        return color;
+    }
+
     /**
      * This method sets the correspondent pixel of the triangle to
      * the pixel from the texture bitmap.
@@ -307,7 +129,17 @@ public class Renderer3D extends Renderer {
         int color;
         //tex_w = (tex_w == 0.0f)? 1.0f : tex_w;
 
-        color = texture.getSample((tex_u / tex_w), (tex_v / tex_w));
+        float textX = (tex_u / tex_w);
+        float textY = (tex_v / tex_w);
+        if (textX < 0) {
+            textX = - textX;
+        }
+        if (textY < 0) {
+            textY = - textY;
+        }
+
+        //color = texture.getSample(textX, textY);
+        color = getSample((tex_u / tex_w), (tex_v / tex_w), texture);
         color = calculateColor(color, brightness);
 
         try {
@@ -317,7 +149,7 @@ public class Renderer3D extends Renderer {
             }
         } catch ( ArrayIndexOutOfBoundsException e ) {
             String errorMessage = "X: " + x + " Y: " + y + " outside of " + getW() + "x" + getH();
-            System.out.println("Set pixel Error: " + errorMessage + e.getMessage());
+            //System.out.println("Set pixel Error: " + errorMessage + e.getMessage());
         }
 
     }

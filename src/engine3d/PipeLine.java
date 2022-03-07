@@ -2,9 +2,7 @@ package engine3d;
 
 import engine3d.matrix.Mat4x4;
 import engine3d.matrix.MatrixMath;
-import engine3d.mesh.Mesh;
-import engine3d.mesh.Model;
-import engine3d.mesh.Triangle;
+import engine3d.mesh.*;
 import engine3d.vectors.Vec3df;
 import engine3d.vectors.Vec4df;
 import olcPGEApproach.gfx.images.Image;
@@ -142,36 +140,6 @@ public class PipeLine {
     }
 
     /**
-     * This method copy the @ArrayList of @Triangles from the
-     * pipeline. It isn't the same instances what are inside the
-     * mesh object. It has to be different, to not modify the
-     * original mesh.
-     * @param mesh the mesh to copy the triangles
-     * @return return a copied triangles from the mesh triangles
-     */
-    private ArrayList<Triangle> copyMeshTriangles(Mesh mesh) {
-        ArrayList<Triangle> triangles = new ArrayList<>();
-        Triangle copiedTriangle;
-        Vec4df[] trianglePoints;
-        Vec3df[] triangleTexture;
-        for ( Triangle triangle : mesh.getTris() ) {
-            copiedTriangle = new Triangle();
-            trianglePoints = new Vec4df[3];
-            triangleTexture = new Vec3df[3];
-            trianglePoints[0] = triangle.getP()[0];
-            trianglePoints[1] = triangle.getP()[1];
-            trianglePoints[2] = triangle.getP()[2];
-            triangleTexture[0] = triangle.getT()[0];
-            triangleTexture[1] = triangle.getT()[1];
-            triangleTexture[2] = triangle.getT()[2];
-            copiedTriangle.setP(trianglePoints);
-            copiedTriangle.setT(triangleTexture);
-            triangles.add(copiedTriangle);
-        }
-        return triangles;
-    }
-
-    /**
      * This method transform the mesh by the worldMatrix
      * @param mesh the mesh to transform
      */
@@ -268,6 +236,8 @@ public class PipeLine {
         for ( Triangle triangle : triangles ) {
 
             normal = calculateNormalToPlane(triangle);
+            //normal = new Vec4df(-normal.getX(), -normal.getY(), -normal.getZ(), normal.getW());
+            //normal = triangle.getN()[0];
 
             diffTrianglePointCameraOrigin = MatrixMath.vectorSub(triangle.getP()[0], cameraObj.getOrigin());
 
@@ -458,7 +428,13 @@ public class PipeLine {
      * @param model the 3D model
      */
     public void renderModel(Model model) {
-        renderMesh(model.getMesh(), model.getTexture());
+        for (MeshObject o : model.getO()) {
+            if (o.getMaterial() != null) {
+                if (o.getMaterial().getTexture() != null) {
+                    renderMesh(o.getMesh(), o.getMaterial().getTexture());
+                }
+            }
+        }
     }
 
     /**

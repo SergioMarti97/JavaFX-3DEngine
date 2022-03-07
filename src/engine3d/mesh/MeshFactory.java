@@ -323,28 +323,14 @@ public class MeshFactory {
     /**
      * This method resumes all the the lines of
      * code what loads from a object file a mesh
-     * @param path the path where is the mesh
-     * @param hasTexture if the mesh has texture
-     * @return the model
-     */
-    public static Mesh getMeshFromObj(String path, boolean hasTexture) {
-        MeshObject obj = new MeshObject();
-        obj.load(path, hasTexture);
-        return obj.getMesh();
-    }
-
-    /**
-     * This method resumes all the the lines of
-     * code what loads from a object file a mesh
      * and the texture of the model
      * @param meshPath the path where is the mesh
-     * @param texturePath the path where is the texture
      * @return the model
      */
-    public static Model getModel(String meshPath, String texturePath) {
-        MeshObject obj = new MeshObject();
-        obj.load(meshPath, true);
-        return new Model(obj.getMesh(), new Image(texturePath));
+    public static Model getModel(String meshPath) {
+        ObjReader reader = new ObjReader();
+        reader.load(meshPath);
+        return new Model(reader.getObjects());
     }
 
 }
